@@ -1,0 +1,40 @@
+.app-container {
+  min-height: 100vh;
+  background-color: var(--color-bg-dark);
+}
+
+.content-area {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  /* 75% - 25% */
+  gap: 1.5rem;
+  height: calc(100vh - 4rem);
+  /* Full height minus padding */
+}
+
+.chart-section {
+  min-height: 400px;
+}
+
+.feed-section {
+  min-height: 400px;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}

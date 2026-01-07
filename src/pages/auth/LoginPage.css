@@ -1,0 +1,231 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-dark);
+    padding: 1rem;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 380px;
+    /* Reduced from 420px */
+    padding: 2rem;
+    /* Reduced from 2.5rem */
+    background: rgba(42, 42, 42, 0.6);
+    backdrop-filter: blur(20px);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    /* Reduced from 2.5rem */
+}
+
+.login-header h1 {
+    font-size: 1.75rem;
+    /* Reduced from 2rem */
+    margin: 0 0 0.25rem 0;
+}
+
+.login-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--color-text-secondary);
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 4rem !important;
+    /* Reduced padding */
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--color-gold);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.password-toggle:hover {
+    color: var(--color-text-primary);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-container input {
+    display: none;
+}
+
+.checkmark {
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: transparent;
+}
+
+.checkbox-container input:checked+.checkmark {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #000;
+}
+
+.checkbox-container:hover .checkmark {
+    border-color: var(--color-gold);
+}
+
+.forgot-password {
+    color: var(--color-text-gold);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.forgot-password:hover {
+    opacity: 0.8;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--color-gold);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: var(--color-gold-dim);
+    transform: translateY(-1px);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.25rem 0;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+    padding: 0 1rem;
+}
+
+.btn-google {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.btn-google:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.google-icon {
+    color: var(--color-text-primary);
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1.5rem;
+        max-width: 100%;
+        border-radius: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: var(--color-bg-dark);
+        /* Solid background on mobile */
+    }
+
+    .login-container {
+        padding: 0;
+        align-items: flex-start;
+    }
+}

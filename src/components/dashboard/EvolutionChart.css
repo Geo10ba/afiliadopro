@@ -1,0 +1,45 @@
+.evolution-chart-container {
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.chart-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.chart-filter {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chart-filter:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+}
+
+.chart-filter option {
+    background: var(--color-bg-dark);
+    color: var(--color-text-primary);
+}
+
+.chart-wrapper {
+    flex: 1;
+    min-height: 300px;
+}

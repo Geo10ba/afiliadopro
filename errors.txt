@@ -1,0 +1,16 @@
+﻿src/App.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/App.tsx(3,1): error TS6133: 'Sidebar' is declared but its value is never read.
+src/App.tsx(4,1): error TS6133: 'MobileHeader' is declared but its value is never read.
+src/components/admin/UserOrdersModal.tsx(2,32): error TS6133: 'DollarSign' is declared but its value is never read.
+src/components/dashboard/ActivityFeed.tsx(2,10): error TS6133: 'FileText' is declared but its value is never read.
+src/components/dashboard/ActivityFeed.tsx(2,20): error TS6133: 'UserPlus' is declared but its value is never read.
+src/components/dashboard/ActivityFeed.tsx(2,30): error TS6133: 'DollarSign' is declared but its value is never read.
+src/components/dashboard/EvolutionChart.tsx(156,33): error TS2322: Type '(value: number) => [string, "Vendas"]' is not assignable to type 'Formatter<number, "Vendas">'.
+  Types of parameters 'value' and 'value' are incompatible.
+    Type 'number | undefined' is not assignable to type 'number'.
+      Type 'undefined' is not assignable to type 'number'.
+src/components/notifications/NotificationsPopover.tsx(2,23): error TS6133: 'Trash2' is declared but its value is never read.
+src/components/notifications/NotificationsPopover.tsx(2,31): error TS6133: 'X' is declared but its value is never read.
+src/components/orders/OrderModal.tsx(2,48): error TS6133: 'Check' is declared but its value is never read.
+src/contexts/NotificationsContext.tsx(40,18): error TS6133: 'payload' is declared but its value is never read.
+src/pages/auth/RegisterPage.tsx(2,55): error TS6133: 'FileText' is declared but its value is never read.

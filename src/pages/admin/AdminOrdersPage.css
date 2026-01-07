@@ -1,0 +1,198 @@
+.admin-orders-container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.filters-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.search-group,
+.filter-group {
+    position: relative;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    height: 48px;
+}
+
+.search-group {
+    flex: 2;
+    min-width: 300px;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-group input,
+.filter-group select {
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    width: 100%;
+    height: 100%;
+    padding-left: 0.5rem;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+.filter-group select option {
+    background: #1a1a1a;
+    color: var(--color-text-primary);
+}
+
+.search-icon,
+.filter-icon {
+    color: var(--color-text-secondary);
+}
+
+.orders-table-container {
+    overflow-x: auto;
+    padding: 0;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.orders-table th {
+    padding: 1rem 1.5rem;
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+}
+
+.orders-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--color-text-primary);
+    vertical-align: middle;
+}
+
+.orders-table tr:last-child td {
+    border-bottom: none;
+}
+
+.orders-table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.product-cell {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-name {
+    font-weight: 500;
+}
+
+.product-qty {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+}
+
+.amount-cell {
+    font-weight: 700;
+    color: var(--color-gold);
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.badge-warning {
+    background: rgba(250, 204, 21, 0.15);
+    color: #facc15;
+}
+
+.badge-info {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+}
+
+.badge-primary {
+    background: rgba(255, 215, 0, 0.15);
+    color: var(--color-gold);
+}
+
+.actions-cell {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-approve {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+}
+
+.btn-approve:hover {
+    background: #4ade80;
+    color: #000;
+}
+
+.btn-reject {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.btn-reject:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-text-secondary);
+}
+
+@media (max-width: 768px) {
+    .filters-bar {
+        flex-direction: column;
+    }
+
+    .search-group,
+    .filter-group {
+        width: 100%;
+    }
+}

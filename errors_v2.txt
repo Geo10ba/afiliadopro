@@ -1,0 +1,5 @@
+﻿src/components/admin/UserOrdersModal.tsx(4,16): error TS1109: Expression expected.
+src/components/admin/UserOrdersModal.tsx(8,1): error TS1128: Declaration or statement expected.
+src/components/dashboard/ActivityFeed.tsx(6,1): error TS1128: Declaration or statement expected.
+src/components/notifications/NotificationsPopover.tsx(75,1): error TS1128: Declaration or statement expected.
+src/components/orders/OrderModal.tsx(4,1): error TS1128: Declaration or statement expected.

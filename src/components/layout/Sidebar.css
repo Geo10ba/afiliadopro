@@ -1,0 +1,129 @@
+.sidebar {
+    width: 280px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 50;
+    transition: all 0.3s ease;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    padding: 0 0.5rem;
+    color: var(--color-gold);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-primary);
+}
+
+.nav-item.active {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--color-gold);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.nav-icon {
+    min-width: 24px;
+}
+
+.nav-label {
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+.nav-item.logout:hover {
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+}
+
+/* Tablet Responsive (1024px and below) */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 88px;
+        padding: 2rem 0.75rem;
+    }
+
+    .sidebar-logo {
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 0;
+    }
+
+    .sidebar-logo span {
+        display: none;
+    }
+
+    .nav-label {
+        opacity: 0;
+        width: 0;
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+        padding: 1rem 0;
+    }
+}
+
+/* Mobile Responsive (768px and below) */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: #1a1a1a;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        width: 280px;
+    }
+
+    .sidebar.open .nav-label {
+        opacity: 1;
+        width: auto;
+        display: block;
+    }
+}

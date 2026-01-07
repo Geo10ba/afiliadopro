@@ -1,0 +1,8 @@
+﻿src/components/admin/UserOrdersModal.tsx(2,32): error TS6133: 'User' is declared but its value is never read.
+src/components/admin/UserOrdersModal.tsx(2,38): error TS6133: 'Mail' is declared but its value is never read.
+src/components/admin/UserOrdersModal.tsx(2,44): error TS6133: 'Phone' is declared but its value is never read.
+src/components/admin/UserOrdersModal.tsx(2,51): error TS6133: 'MapPin' is declared but its value is never read.
+src/components/admin/UserOrdersModal.tsx(134,66): error TS2552: Cannot find name 'ExternalLink'. Did you mean 'External'?
+src/components/admin/UserOrdersModal.tsx(148,93): error TS2552: Cannot find name 'Clock'. Did you mean 'Lock'?
+src/components/admin/UserOrdersModal.tsx(149,94): error TS2304: Cannot find name 'CheckCircle'.
+src/components/notifications/NotificationsPopover.tsx(2,23): error TS6133: 'Trash' is declared but its value is never read.
