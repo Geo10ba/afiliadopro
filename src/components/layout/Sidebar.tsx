@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
 
       if (user) {
         setUserEmail(user.email || '');
-        const { data, error } = await supabase.from('profiles').select('role, avatar_url').eq('id', user.id).single();
+        const { data } = await supabase.from('profiles').select('role, avatar_url').eq('id', user.id).single();
         // console.log('Sidebar: Profile data:', data, 'Error:', error);
 
         if (data) {
@@ -49,8 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
         // console.log('Sidebar: No user found');
         setUserEmail(null);
       }
-    } catch (error) {
-      console.error('Sidebar: Error checking role:', error);
+    } catch (_error) {
+      console.error('Sidebar: Error checking role:', _error);
       // Fallback in case of error
       setRole('affiliate');
       setUserEmail(null);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '../../lib/utils'; // Assuming you have a utils file for class merging, otherwise I'll use simple string concat or clsx if available. 
+// import { cn } from '../../lib/utils'; // Unused 
 // Checking package.json, clsx and tailwind-merge are installed. I should check if lib/utils exists.
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> { }

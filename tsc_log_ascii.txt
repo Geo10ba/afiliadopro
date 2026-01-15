@@ -1,0 +1,5 @@
+src/components/auth/ProtectedRoute.tsx(4,1): error TS6133: 'toast' is declared but its value is never read.
+src/components/dashboard/ActivityFeed.tsx(100,11): error TS6133: 'translateStatus' is declared but its value is never read.
+src/components/layout/Sidebar.tsx(29,23): error TS6133: 'error' is declared but its value is never read.
+src/pages/admin/AdminCommissionsPage.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/affiliate/ProductEditPage.tsx(3,35): error TS6133: 'Trash2' is declared but its value is never read.

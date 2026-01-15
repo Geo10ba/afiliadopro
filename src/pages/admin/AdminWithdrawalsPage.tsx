@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { toast } from 'sonner';
-import { Check, X, DollarSign, Clock } from 'lucide-react';
+import { Check, X, DollarSign } from 'lucide-react';
 import { Skeleton } from '../../components/ui/Skeleton';
 import Pagination from '../../components/ui/Pagination';
 

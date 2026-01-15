@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Upload, Save, Trash2, FileText } from 'lucide-react';
+import { ArrowLeft, Upload, Save, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '../../lib/supabase';
 import './ProductRegistrationPage.css'; // Reuse styles

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
 
 interface ProtectedRouteProps {
     children: React.ReactNode;

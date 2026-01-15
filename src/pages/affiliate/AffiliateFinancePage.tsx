@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Wallet, TrendingDown, AlertCircle, Calendar, DollarSign, FileText, CreditCard } from 'lucide-react';
+import { Wallet, TrendingDown, Calendar, DollarSign, FileText, CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '../../lib/supabase';
 import { Skeleton } from '../../components/ui/Skeleton';

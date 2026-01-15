@@ -28,8 +28,8 @@ const ProductRegistrationPage: React.FC = () => {
     const [calculatedCost, setCalculatedCost] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    // const [imageFile, setImageFile] = useState<File | null>(null);
+    // const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     useEffect(() => {
         fetchMaterials();
@@ -115,11 +115,12 @@ const ProductRegistrationPage: React.FC = () => {
                 height: '',
                 materialId: '',
                 priceType: 'meter',
-                fixedPrice: ''
+                fixedPrice: '',
+                commissionRate: '10'
             });
             setCalculatedCost(null);
-            setImageFile(null);
-            setImagePreview(null);
+            // setImageFile(null);
+            // setImagePreview(null);
 
             toast.success('Produto cadastrado com sucesso!');
             navigate('/products/my');

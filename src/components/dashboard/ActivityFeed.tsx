@@ -97,15 +97,7 @@ const ActivityFeed: React.FC = () => {
         }
     };
 
-    const translateStatus = (status: string) => {
-        const map: { [key: string]: string } = {
-            pending: 'Pendente',
-            approved: 'Aprovado',
-            rejected: 'Rejeitado',
-            paid: 'Pago'
-        };
-        return map[status] || status;
-    };
+
 
     const getStatusIcon = (status: string) => {
         switch (status) {

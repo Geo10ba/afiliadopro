@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Copy, Share2, Award, TrendingUp, DollarSign, Clock, Check, X } from 'lucide-react';
+import { Users, Copy, Share2, Award, TrendingUp, DollarSign } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '../../lib/supabase';
 import { Skeleton } from '../../components/ui/Skeleton';

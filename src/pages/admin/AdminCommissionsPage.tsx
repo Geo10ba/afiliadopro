@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Search, Filter, DollarSign, Calendar } from 'lucide-react';
+import { Search, DollarSign } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Commission {
