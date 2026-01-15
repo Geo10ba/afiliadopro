@@ -58,10 +58,14 @@ export const NotificationsProvider: React.FC<{ children: React.ReactNode }> = ({
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return;
 
+            // Check for impersonation
+            const impersonatedId = localStorage.getItem('impersonatedUserId');
+            const targetUserId = impersonatedId || user.id;
+
             const { data, error } = await supabase
                 .from('notifications')
                 .select('*')
-                .eq('user_id', user.id)
+                .eq('user_id', targetUserId)
                 .order('created_at', { ascending: false })
                 .limit(20);
 

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Search, User, Mail, Phone, Shield, Trash2, Eye, DollarSign, Calendar, ExternalLink } from 'lucide-react';
+import { Search, User, Mail, Phone, Shield, Trash2, Eye, DollarSign, Calendar, ExternalLink, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { supabase } from '../../lib/supabase';
 import UserOrdersModal from '../../components/admin/UserOrdersModal';
+import UserNotificationsModal from '../../components/admin/UserNotificationsModal';
 import { useImpersonation } from '../../hooks/useImpersonation';
 import './AdminUsersPage.css';
 
@@ -29,6 +30,7 @@ const AdminUsersPage: React.FC = () => {
 
     const [selectedUser, setSelectedUser] = useState<{ id: string, name: string } | null>(null);
     const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
+    const [isNotificationsModalOpen, setIsNotificationsModalOpen] = useState(false);
     const { startImpersonation } = useImpersonation();
 
     useEffect(() => {
@@ -125,7 +127,13 @@ const AdminUsersPage: React.FC = () => {
             toast.success('Usuário excluído com sucesso!');
         } catch (error: any) {
             console.error('Error deleting user:', error);
-            toast.error('Erro ao excluir usuário: ' + error.message);
+            if (error.message?.includes('violates foreign key constraint "products_owner_id_fkey"')) {
+                toast.error('Não é possível excluir este usuário pois ele é dono de produtos. Execute o script de correção no banco de dados ou remova os produtos manualmente.');
+            } else if (error.message?.includes('violates foreign key constraint')) {
+                toast.error(`Erro de dependência ao excluir usuário: ${error.message}. Verifique se o usuário tem registros vinculados.`);
+            } else {
+                toast.error('Erro ao excluir usuário: ' + error.message);
+            }
         }
     };
 
@@ -158,6 +166,11 @@ const AdminUsersPage: React.FC = () => {
     const handleViewOrders = (userId: string, userName: string) => {
         setSelectedUser({ id: userId, name: userName });
         setIsOrdersModalOpen(true);
+    };
+
+    const handleViewNotifications = (userId: string, userName: string) => {
+        setSelectedUser({ id: userId, name: userName });
+        setIsNotificationsModalOpen(true);
     };
 
     const filteredUsers = users.filter(user =>
@@ -279,6 +292,14 @@ const AdminUsersPage: React.FC = () => {
                                                     <Eye size={18} />
                                                 </button>
                                                 <button
+                                                    className="action-button notifications"
+                                                    onClick={() => handleViewNotifications(user.id, user.full_name)}
+                                                    title="Ver Notificações"
+                                                    style={{ background: 'rgba(111, 66, 193, 0.1)', color: '#6f42c1', border: '1px solid rgba(111, 66, 193, 0.3)' }}
+                                                >
+                                                    <Bell size={18} />
+                                                </button>
+                                                <button
                                                     className="action-button impersonate"
                                                     onClick={() => startImpersonation(user.id)}
                                                     title="Acessar Escritório"
@@ -332,12 +353,20 @@ const AdminUsersPage: React.FC = () => {
             </div>
 
             {selectedUser && (
-                <UserOrdersModal
-                    isOpen={isOrdersModalOpen}
-                    onClose={() => setIsOrdersModalOpen(false)}
-                    userId={selectedUser.id}
-                    userName={selectedUser.name}
-                />
+                <>
+                    <UserOrdersModal
+                        isOpen={isOrdersModalOpen}
+                        onClose={() => setIsOrdersModalOpen(false)}
+                        userId={selectedUser.id}
+                        userName={selectedUser.name}
+                    />
+                    <UserNotificationsModal
+                        isOpen={isNotificationsModalOpen}
+                        onClose={() => setIsNotificationsModalOpen(false)}
+                        userId={selectedUser.id}
+                        userName={selectedUser.name}
+                    />
+                </>
             )}
         </div>
     );

@@ -24,10 +24,18 @@ const AdminCommissionsPage = () => {
     const [commissions, setCommissions] = useState<Commission[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debugStats, setDebugStats] = useState({ orders: 0, referrers: 0 });
 
     useEffect(() => {
         fetchCommissions();
+        fetchDebugStats();
     }, []);
+
+    const fetchDebugStats = async () => {
+        const { count: orderCount } = await supabase.from('orders').select('*', { count: 'exact', head: true });
+        const { count: refCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).not('referred_by', 'is', null);
+        setDebugStats({ orders: orderCount || 0, referrers: refCount || 0 });
+    };
 
     const fetchCommissions = async () => {
         try {
@@ -87,6 +95,26 @@ const AdminCommissionsPage = () => {
                         <span className="stat-value">R$ {totalCommissions.toFixed(2)}</span>
                     </div>
                 </div>
+            </div>
+
+            {/* Debug Info Section */}
+            <div style={{ marginBottom: '20px', padding: '15px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <h3 style={{ fontSize: '14px', marginBottom: '10px', color: '#aaa' }}>Diagnóstico do Sistema</h3>
+                <div style={{ display: 'flex', gap: '20px', fontSize: '13px' }}>
+                    <div>
+                        <span style={{ color: '#888' }}>Total de Pedidos: </span>
+                        <strong style={{ color: debugStats.orders > 0 ? '#28a745' : '#dc3545' }}>{debugStats.orders}</strong>
+                    </div>
+                    <div>
+                        <span style={{ color: '#888' }}>Usuários com Referência: </span>
+                        <strong style={{ color: debugStats.referrers > 0 ? '#28a745' : '#dc3545' }}>{debugStats.referrers}</strong>
+                    </div>
+                </div>
+                {debugStats.orders === 0 && (
+                    <p style={{ marginTop: '10px', color: '#e0a800', fontSize: '12px' }}>
+                        ⚠️ Não há pedidos no sistema. Crie um pedido para gerar comissões.
+                    </p>
+                )}
             </div>
 
             <div className="orders-table-container card-premium">

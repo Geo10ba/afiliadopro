@@ -1,5 +1,5 @@
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
@@ -28,6 +28,7 @@ import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminCommissionsPage from './pages/admin/AdminCommissionsPage';
 import AdminWithdrawalsPage from './pages/admin/AdminWithdrawalsPage';
+import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 import LandingPage from './pages/landing/LandingPage';
 
 const Dashboard = () => {
@@ -186,6 +187,12 @@ function App() {
         <Route path="/admin/withdrawals" element={
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout><AdminWithdrawalsPage /></MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/settings" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout><AdminSettingsPage /></MainLayout>
           </ProtectedRoute>
         } />
 

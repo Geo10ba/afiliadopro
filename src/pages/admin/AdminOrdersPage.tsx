@@ -395,7 +395,7 @@ const AdminOrdersPage: React.FC = () => {
                                                             </>
 
                                                         )}
-                                                        {(order.status === 'approved' || order.status === 'shipped' || order.status === 'delivered') && (
+                                                        {order.status === 'approved' && (
                                                             <button
                                                                 className="btn-icon"
                                                                 title="Marcar como Pago"
@@ -419,7 +419,7 @@ const AdminOrdersPage: React.FC = () => {
                                                                 <Undo size={18} />
                                                             </button>
                                                         )}
-                                                        {(order.status === 'approved' || order.status === 'paid') && (
+                                                        {order.status === 'paid' && (
                                                             <button
                                                                 className="btn-icon"
                                                                 title="Marcar como Enviado"
@@ -430,13 +430,33 @@ const AdminOrdersPage: React.FC = () => {
                                                             </button>
                                                         )}
                                                         {order.status === 'shipped' && (
+                                                            <>
+                                                                <button
+                                                                    className="btn-icon"
+                                                                    title="Desmarcar Envio (Voltar para Pago)"
+                                                                    onClick={() => handleStatusUpdate(order.id, 'paid')}
+                                                                    style={{ color: '#e03131', background: 'rgba(224, 49, 49, 0.1)', border: '1px solid rgba(224, 49, 49, 0.3)' }}
+                                                                >
+                                                                    <Undo size={18} />
+                                                                </button>
+                                                                <button
+                                                                    className="btn-icon"
+                                                                    title="Marcar como Entregue"
+                                                                    onClick={() => handleStatusUpdate(order.id, 'delivered')}
+                                                                    style={{ color: '#28a745', background: 'rgba(40, 167, 69, 0.1)', border: '1px solid rgba(40, 167, 69, 0.3)' }}
+                                                                >
+                                                                    <Check size={18} />
+                                                                </button>
+                                                            </>
+                                                        )}
+                                                        {order.status === 'delivered' && (
                                                             <button
                                                                 className="btn-icon"
-                                                                title="Marcar como Entregue"
-                                                                onClick={() => handleStatusUpdate(order.id, 'delivered')}
-                                                                style={{ color: '#28a745', background: 'rgba(40, 167, 69, 0.1)', border: '1px solid rgba(40, 167, 69, 0.3)' }}
+                                                                title="Desmarcar Entrega (Voltar para Enviado)"
+                                                                onClick={() => handleStatusUpdate(order.id, 'shipped')}
+                                                                style={{ color: '#e03131', background: 'rgba(224, 49, 49, 0.1)', border: '1px solid rgba(224, 49, 49, 0.3)' }}
                                                             >
-                                                                <Check size={18} />
+                                                                <Undo size={18} />
                                                             </button>
                                                         )}
                                                         <button

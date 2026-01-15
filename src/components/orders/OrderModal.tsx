@@ -79,7 +79,8 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, product, onSuc
                 }
             }
 
-            const { error: orderError } = await supabase.from('orders').insert([{
+            // 1. Create order in Supabase
+            const { data: orderData, error: orderError } = await supabase.from('orders').insert([{
                 user_id: user.id,
                 product_id: product.id,
                 amount: totalAmount,
@@ -87,13 +88,63 @@ const OrderModal: React.FC<OrderModalProps> = ({ isOpen, onClose, product, onSuc
                 download_link: downloadLink,
                 payment_method: paymentMethod,
                 status: paymentMethod === 'now' ? 'pending' : 'pending' // 'now' will wait for payment, 'invoice' waits for approval
-            }]);
+            }]).select().single();
 
             if (orderError) throw orderError;
 
+            // 2. If 'now', generate Mercado Pago preference and redirect
+            if (paymentMethod === 'now' && orderData) {
+                let result;
+                try {
+                    const invokePromise = supabase.functions.invoke('create-payment-preference', {
+                        body: {
+                            orderId: orderData.id,
+                            items: [
+                                {
+                                    title: product.name,
+                                    quantity: quantity,
+                                    unit_price: product.final_price
+                                }
+                            ],
+                            payer: {
+                                email: user.email,
+                                name: user.user_metadata?.full_name || user.email
+                            }
+                        }
+                    });
+
+                    const timeoutPromise = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Timeout: A função demorou muito para responder.')), 15000)
+                    );
+
+                    result = await Promise.race([invokePromise, timeoutPromise]);
+                } catch (e: any) {
+                    throw e;
+                }
+
+                const { data: paymentData, error: paymentError } = result as any;
+
+                // Check for custom error in 200 OK response
+                if (paymentData && (paymentData.error || paymentData.success === false)) {
+                    throw new Error(paymentData.error || 'Erro na API de pagamento.');
+                }
+
+                if (paymentError) {
+                    console.error('Payment Function Error:', paymentError);
+                    throw new Error('Erro ao gerar link de pagamento. Tente novamente.');
+                }
+
+                if (paymentData?.init_point) {
+                    window.location.href = paymentData.init_point;
+                    return; // Stop execution to allow redirect
+                } else {
+                    throw new Error('Link de pagamento não retornado.');
+                }
+            }
+
             onSuccess();
             onClose();
-            alert('Pedido criado com sucesso!');
+            // alert('Pedido criado com sucesso!'); // Removed as per user request for cleaner UI, or can be replaced with toast if available
 
         } catch (err: any) {
             console.error('Error creating order:', err);

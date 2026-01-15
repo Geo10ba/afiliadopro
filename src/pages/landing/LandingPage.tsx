@@ -1,15 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, DollarSign, TrendingUp, ShieldCheck, ArrowRight, Star, Zap, Globe, CheckCircle } from 'lucide-react';
+import { Play, DollarSign, ArrowRight, Star, Zap, Globe, CheckCircle, Package } from 'lucide-react';
 import './LandingPage.css';
 import { supabase } from '../../lib/supabase';
 
 const LandingPage: React.FC = () => {
     const [products, setProducts] = useState<any[]>([]);
+    const [settings, setSettings] = useState<any>(null);
+    const [financialResults, setFinancialResults] = useState<any[]>([]);
 
     useEffect(() => {
         fetchFeaturedProducts();
+        fetchSiteSettings();
+        fetchFinancialResults();
     }, []);
+
+    const fetchSiteSettings = async () => {
+        const { data } = await supabase.from('site_settings').select('*').single();
+        if (data) setSettings(data);
+    };
+
+    const fetchFinancialResults = async () => {
+        const { data } = await supabase
+            .from('site_assets')
+            .select('*')
+            .eq('type', 'financial_result')
+            .order('created_at', { ascending: false });
+        if (data) setFinancialResults(data);
+    };
 
     const fetchFeaturedProducts = async () => {
         const { data } = await supabase
@@ -20,6 +38,15 @@ const LandingPage: React.FC = () => {
         if (data) setProducts(data);
     };
 
+    // Default values if settings not loaded yet
+    const heroTitle = settings?.hero_title || 'Domine o Mercado Digital com <span class="text-gold">Poder Total</span>';
+    const heroSubtitle = settings?.hero_subtitle || 'Acesse produtos exclusivos de alta conversão, receba comissões instantâneas e escale suas vendas com nossa tecnologia de ponta.';
+    const videoUrl = settings?.video_url || '';
+    const ctaLink = settings?.cta_link || '/register';
+    const dropshippingTitle = settings?.dropshipping_title || 'Venda sem Estoque / Marketplace';
+    const dropshippingText = settings?.dropshipping_text || 'Além de vender diretamente, você pode oferecer nossos produtos em marketplaces (Shopee, Mercado Livre, Amazon). Nós cuidamos de todo o estoque e logística de envio para você.';
+    const footerLinks = settings?.footer_links || {};
+
     return (
         <div className="landing-container">
             {/* Navigation */}
@@ -29,7 +56,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div className="nav-links">
                     <Link to="/login" className="btn-login">Entrar</Link>
-                    <Link to="/register" className="btn-register">Começar Agora</Link>
+                    <Link to={ctaLink} className="btn-register">Começar Agora</Link>
                 </div>
             </nav>
 
@@ -38,14 +65,10 @@ const LandingPage: React.FC = () => {
                 <div className="hero-grid">
                     <div className="hero-content">
                         <span className="hero-badge">🚀 Plataforma #1 para Afiliados</span>
-                        <h1 className="hero-title">
-                            Domine o Mercado Digital com <span className="text-gold">Poder Total</span>
-                        </h1>
-                        <p className="hero-subtitle">
-                            Acesse produtos exclusivos de alta conversão, receba comissões instantâneas e escale suas vendas com nossa tecnologia de ponta.
-                        </p>
+                        <h1 className="hero-title" dangerouslySetInnerHTML={{ __html: heroTitle }}></h1>
+                        <p className="hero-subtitle">{heroSubtitle}</p>
                         <div className="hero-actions">
-                            <Link to="/register" className="btn-hero-primary">
+                            <Link to={ctaLink} className="btn-hero-primary">
                                 Criar Conta Grátis <ArrowRight size={20} />
                             </Link>
                             <a href="#video" className="btn-hero-secondary">
@@ -145,8 +168,41 @@ const LandingPage: React.FC = () => {
                             Venda para o mundo todo com nosso checkout multi-moeda e páginas traduzidas automaticamente.
                         </p>
                     </div>
+                    {/* Dropshipping / Marketplace Feature */}
+                    <div className="feature-card glass-card" style={{ gridColumn: '1 / -1', background: 'linear-gradient(145deg, rgba(255,215,0,0.05), rgba(0,0,0,0.4))' }}>
+                        <div className="feature-icon-wrapper">
+                            <Package size={32} />
+                        </div>
+                        <h3 className="feature-title">{dropshippingTitle}</h3>
+                        <p className="feature-desc">
+                            {dropshippingText}
+                        </p>
+                    </div>
                 </div>
             </section>
+
+            {/* Financial Results Carousel */}
+            {financialResults.length > 0 && (
+                <section className="carousel-section" style={{ background: '#0a0a0a' }}>
+                    <div className="section-header">
+                        <h2 className="section-title">Resultados de <span className="text-gold">Afiliados</span></h2>
+                        <p className="section-subtitle">Veja o que nossos parceiros estão conquistando.</p>
+                    </div>
+                    <div className="carousel-container">
+                        <div className="carousel-track">
+                            {[...financialResults, ...financialResults].map((result, index) => (
+                                <div key={`${result.id}-${index}`} className="product-card-premium" style={{ width: '300px', height: 'auto' }}>
+                                    <img
+                                        src={result.url}
+                                        alt="Resultado Financeiro"
+                                        style={{ width: '100%', borderRadius: '12px', border: '1px solid #333' }}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Video Section */}
             <section id="video" className="video-section">
@@ -155,13 +211,26 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div className="video-frame">
                     <div className="video-content">
-                        <div className="play-button-wrapper">
-                            <Play size={32} color="#000" fill="#000" style={{ marginLeft: '4px' }} />
-                        </div>
-                        {/* Placeholder text */}
-                        <div style={{ position: 'absolute', bottom: '20px', color: '#fff', opacity: 0.7 }}>
-                            Vídeo de Apresentação (1:30)
-                        </div>
+                        {videoUrl ? (
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src={videoUrl}
+                                title="Video de Apresentação"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        ) : (
+                            <>
+                                <div className="play-button-wrapper">
+                                    <Play size={32} color="#000" fill="#000" style={{ marginLeft: '4px' }} />
+                                </div>
+                                <div style={{ position: 'absolute', bottom: '20px', color: '#fff', opacity: 0.7 }}>
+                                    Vídeo de Apresentação (Configure no Admin)
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </section>
@@ -210,9 +279,11 @@ const LandingPage: React.FC = () => {
                     <img src="/logo.png" alt="Afiliado Pro" style={{ height: '40px', filter: 'grayscale(100%)', opacity: 0.5 }} />
                 </div>
                 <div className="footer-links">
-                    <Link to="#" className="footer-link">Termos de Uso</Link>
-                    <Link to="#" className="footer-link">Privacidade</Link>
-                    <Link to="#" className="footer-link">Suporte</Link>
+                    {footerLinks.terms && <Link to={footerLinks.terms} className="footer-link">Termos de Uso</Link>}
+                    {footerLinks.privacy && <Link to={footerLinks.privacy} className="footer-link">Privacidade</Link>}
+                    {footerLinks.support && <Link to={footerLinks.support} className="footer-link">Suporte</Link>}
+                    {footerLinks.instagram && <a href={footerLinks.instagram} target="_blank" rel="noopener noreferrer" className="footer-link">Instagram</a>}
+                    {footerLinks.facebook && <a href={footerLinks.facebook} target="_blank" rel="noopener noreferrer" className="footer-link">Facebook</a>}
                 </div>
                 <p style={{ color: '#444', fontSize: '0.9rem' }}>&copy; {new Date().getFullYear()} Afiliado Pro. Todos os direitos reservados.</p>
             </footer >

@@ -167,6 +167,10 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
               <Package size={20} className="nav-icon" />
               <span className="nav-label">Materiais</span>
             </Link>
+            <Link to="/admin/settings" className={`nav-item ${location.pathname === '/admin/settings' ? 'active' : ''}`}>
+              <LayoutDashboard className="nav-icon" size={20} />
+              <span className="nav-label">Landing Page</span>
+            </Link>
             <Link to="/settings" className={`nav-item ${location.pathname === '/settings' ? 'active' : ''}`}>
               <Settings className="nav-icon" size={20} />
               <span className="nav-label">Configurações</span>
