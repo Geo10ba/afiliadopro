@@ -11,25 +11,36 @@ interface Material {
     price_per_m2: number;
 }
 
+interface ProductRegistrationFormData {
+    name: string;
+    pdfUrl: string;
+    imageUrl: string;
+    width: string;
+    height: string;
+    materialId: string;
+    priceType: 'meter' | 'fixed';
+    fixedPrice: string;
+    commissionRate: string;
+}
+
 const ProductRegistrationPage: React.FC = () => {
     const navigate = useNavigate();
     const [materials, setMaterials] = useState<Material[]>([]);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<ProductRegistrationFormData>({
         name: '',
         pdfUrl: '',
         imageUrl: '',
         width: '',
         height: '',
         materialId: '',
-        priceType: 'meter' as 'meter' | 'fixed',
+        priceType: 'meter',
         fixedPrice: '',
         commissionRate: '10'
     });
     const [calculatedCost, setCalculatedCost] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
-    // const [imageFile, setImageFile] = useState<File | null>(null);
-    // const [imagePreview, setImagePreview] = useState<string | null>(null);
+
 
     useEffect(() => {
         fetchMaterials();
@@ -119,8 +130,7 @@ const ProductRegistrationPage: React.FC = () => {
                 commissionRate: '10'
             });
             setCalculatedCost(null);
-            // setImageFile(null);
-            // setImagePreview(null);
+
 
             toast.success('Produto cadastrado com sucesso!');
             navigate('/products/my');

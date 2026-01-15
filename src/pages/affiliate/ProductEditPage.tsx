@@ -5,6 +5,19 @@ import { toast } from 'sonner';
 import { supabase } from '../../lib/supabase';
 import './ProductRegistrationPage.css'; // Reuse styles
 
+interface ProductFormData {
+    name: string;
+    description: string;
+    material_id: string;
+    width: string;
+    height: string;
+    price_type: string;
+    base_price: string;
+    final_price: string;
+    image_url: string;
+    commission_rate: string;
+}
+
 const ProductEditPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -12,7 +25,7 @@ const ProductEditPage = () => {
     const [saving, setSaving] = useState(false);
     const [materials, setMaterials] = useState<any[]>([]);
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<ProductFormData>({
         name: '',
         description: '',
         material_id: '',
