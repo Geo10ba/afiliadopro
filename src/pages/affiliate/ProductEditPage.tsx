@@ -24,6 +24,7 @@ const ProductEditPage = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [materials, setMaterials] = useState<any[]>([]);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const [formData, setFormData] = useState<ProductFormData>({
         name: '',
@@ -40,10 +41,21 @@ const ProductEditPage = () => {
 
     useEffect(() => {
         fetchMaterials();
+        checkUserRole();
         if (id) {
             fetchProduct(id);
         }
     }, [id]);
+
+    const checkUserRole = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+            if (data?.role === 'admin') {
+                setIsAdmin(true);
+            }
+        }
+    };
 
     const fetchMaterials = async () => {
         try {
@@ -277,26 +289,28 @@ const ProductEditPage = () => {
                     </div>
                 </div>
 
-                <div className="form-group">
-                    <label>Comissão de Afiliado (%)</label>
-                    <div className="input-with-icon">
-                        <FileText size={20} />
-                        <input
-                            type="number"
-                            name="commission_rate"
-                            value={formData.commission_rate}
-                            onChange={handleChange}
-                            placeholder="10"
-                            step="0.1"
-                            min="0"
-                            max="100"
-                            className="form-input"
-                        />
+                {isAdmin && (
+                    <div className="form-group">
+                        <label>Comissão de Afiliado (%)</label>
+                        <div className="input-with-icon">
+                            <FileText size={20} />
+                            <input
+                                type="number"
+                                name="commission_rate"
+                                value={formData.commission_rate}
+                                onChange={handleChange}
+                                placeholder="10"
+                                step="0.1"
+                                min="0"
+                                max="100"
+                                className="form-input"
+                            />
+                        </div>
+                        <p className="field-hint" style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.25rem' }}>
+                            Porcentagem que o afiliado receberá ao vender este produto.
+                        </p>
                     </div>
-                    <p className="field-hint" style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.25rem' }}>
-                        Porcentagem que o afiliado receberá ao vender este produto.
-                    </p>
-                </div>
+                )}
 
                 <div className="form-group">
                     <label>Descrição</label>

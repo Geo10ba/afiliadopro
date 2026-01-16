@@ -29,6 +29,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminCommissionsPage from './pages/admin/AdminCommissionsPage';
 import AdminWithdrawalsPage from './pages/admin/AdminWithdrawalsPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+import AdminProductsPage from './pages/admin/AdminProductsPage';
 import LandingPage from './pages/landing/LandingPage';
 
 const Dashboard = () => {
@@ -193,6 +194,12 @@ function App() {
         <Route path="/admin/settings" element={
           <ProtectedRoute allowedRoles={['admin']}>
             <MainLayout><AdminSettingsPage /></MainLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/products" element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <MainLayout><AdminProductsPage /></MainLayout>
           </ProtectedRoute>
         } />
 

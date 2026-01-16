@@ -143,6 +143,11 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
               <span className="nav-label">Produtos para Venda</span>
             </Link>
 
+            <Link to="/admin/products" className={`nav-item ${location.pathname === '/admin/products' ? 'active' : ''}`}>
+              <Package size={20} className="nav-icon" />
+              <span className="nav-label">Gerenciar Produtos</span>
+            </Link>
+
             <Link to="/admin/users" className={`nav-item ${location.pathname === '/admin/users' ? 'active' : ''}`}>
               <Users size={20} className="nav-icon" />
               <span className="nav-label">Afiliados</span>

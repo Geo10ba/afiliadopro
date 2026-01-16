@@ -309,26 +309,28 @@ const ProductRegistrationPage: React.FC = () => {
                                     </div>
                                 )}
 
-                                <div className="form-group" style={{ marginTop: '1rem' }}>
-                                    <label>Comissão de Afiliado (%)</label>
-                                    <div className="input-with-icon">
-                                        <FileText size={20} />
-                                        <input
-                                            type="number"
-                                            name="commissionRate"
-                                            value={formData.commissionRate}
-                                            onChange={handleChange}
-                                            placeholder="10"
-                                            step="0.1"
-                                            min="0"
-                                            max="100"
-                                            className="form-input"
-                                        />
+                                {isAdmin && (
+                                    <div className="form-group" style={{ marginTop: '1rem' }}>
+                                        <label>Comissão de Afiliado (%)</label>
+                                        <div className="input-with-icon">
+                                            <FileText size={20} />
+                                            <input
+                                                type="number"
+                                                name="commissionRate"
+                                                value={formData.commissionRate}
+                                                onChange={handleChange}
+                                                placeholder="10"
+                                                step="0.1"
+                                                min="0"
+                                                max="100"
+                                                className="form-input"
+                                            />
+                                        </div>
+                                        <p className="field-hint" style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.25rem' }}>
+                                            Porcentagem que o afiliado receberá ao vender este produto. Padrão: 10%.
+                                        </p>
                                     </div>
-                                    <p className="field-hint" style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.25rem' }}>
-                                        Porcentagem que o afiliado receberá ao vender este produto. Padrão: 10%.
-                                    </p>
-                                </div>
+                                )}
                             </div>
 
                             <button type="submit" className="btn-submit" disabled={loading}>

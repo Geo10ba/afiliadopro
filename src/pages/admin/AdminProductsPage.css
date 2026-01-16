@@ -1,0 +1,90 @@
+.admin-products-container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tabs-container {
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: fit-content;
+}
+
+.tab-btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.tab-btn:hover {
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active {
+    background: var(--color-gold);
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+}
+
+.commission-cell {
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.commission-cell:hover {
+    opacity: 0.8;
+}
+
+.commission-value {
+    font-weight: bold;
+    color: var(--color-gold);
+}
+
+.edit-hint {
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: var(--color-text-secondary);
+}
+
+.commission-cell:hover .edit-hint {
+    opacity: 1;
+}
+
+/* Reusing some table styles but ensuring they are scoped or consistent */
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th {
+    padding: 1rem;
+    text-align: left;
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.products-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.products-table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
