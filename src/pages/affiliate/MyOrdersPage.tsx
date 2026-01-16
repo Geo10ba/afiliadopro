@@ -7,7 +7,7 @@ interface Order {
     id: string;
     created_at: string;
     amount: number;
-    status: 'pending' | 'approved' | 'rejected' | 'shipped' | 'delivered';
+    status: 'pending' | 'approved' | 'rejected' | 'paid' | 'shipped' | 'delivered';
     payment_method: string;
     download_link?: string;
     rejection_reason?: string;
@@ -120,15 +120,22 @@ const MyOrdersPage: React.FC = () => {
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                                             <span className={`status-badge ${order.status}`}>
                                                 {order.status === 'pending' && <Clock size={12} />}
-                                                {order.status === 'approved' && <CheckCircle size={12} />}
+                                                {(order.status === 'approved' || order.status === 'paid') && <CheckCircle size={12} />}
                                                 {order.status === 'shipped' && <Truck size={12} />}
                                                 {order.status === 'delivered' && <Box size={12} />}
                                                 {order.status === 'rejected' && <XCircle size={12} />}
 
-                                                {order.status === 'pending' ? 'Pendente' :
-                                                    order.status === 'approved' ? 'Aprovado' :
-                                                        order.status === 'shipped' ? 'Enviado' :
-                                                            order.status === 'delivered' ? 'Entregue' : 'Rejeitado'}
+                                                {(() => {
+                                                    switch (order.status) {
+                                                        case 'pending': return 'Pendente';
+                                                        case 'approved': return 'Aprovado';
+                                                        case 'paid': return 'Pago';
+                                                        case 'shipped': return 'Enviado';
+                                                        case 'delivered': return 'Entregue';
+                                                        case 'rejected': return 'Rejeitado';
+                                                        default: return order.status;
+                                                    }
+                                                })()}
                                             </span>
                                             {order.status === 'rejected' && order.rejection_reason && (
                                                 <div className="rejection-reason">

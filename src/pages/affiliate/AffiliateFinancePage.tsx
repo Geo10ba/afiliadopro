@@ -119,16 +119,75 @@ const AffiliateFinancePage: React.FC = () => {
             return;
         }
 
+        setLoading(true);
         try {
-            const { error } = await supabase.rpc('pay_invoice', { order_uuid: orderId });
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Usuário não autenticado');
 
-            if (error) throw error;
+            // 1. Fetch full order details
+            const { data: order, error: orderError } = await supabase
+                .from('orders')
+                .select(`
+                    *,
+                    products (name)
+                `)
+                .eq('id', orderId)
+                .single();
 
-            toast.success('Pagamento realizado com sucesso!');
-            fetchFinanceData(); // Refresh data
+            if (orderError) throw orderError;
+            if (!order) throw new Error('Pedido não encontrado');
+
+            // 2. Generate Mercado Pago preference
+            let result;
+            try {
+                const invokePromise = supabase.functions.invoke('create-payment-preference', {
+                    body: {
+                        orderId: order.id,
+                        items: [
+                            {
+                                title: order.products?.name || 'Produto',
+                                quantity: order.quantity || 1,
+                                unit_price: Number(order.amount) / (order.quantity || 1) // Calculate unit price from total amount
+                            }
+                        ],
+                        payer: {
+                            email: user.email,
+                            name: user.user_metadata?.full_name || user.email
+                        }
+                    }
+                });
+
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Timeout: A função demorou muito para responder.')), 15000)
+                );
+
+                result = await Promise.race([invokePromise, timeoutPromise]);
+            } catch (e: any) {
+                throw e;
+            }
+
+            const { data: paymentData, error: paymentError } = result as any;
+
+            if (paymentData && (paymentData.error || paymentData.success === false)) {
+                throw new Error(paymentData.error || 'Erro na API de pagamento.');
+            }
+
+            if (paymentError) {
+                console.error('Payment Function Error:', paymentError);
+                throw new Error('Erro ao gerar link de pagamento. Tente novamente.');
+            }
+
+            if (paymentData?.init_point) {
+                window.location.href = paymentData.init_point;
+            } else {
+                throw new Error('Link de pagamento não retornado.');
+            }
+
         } catch (error: any) {
             console.error('Error paying invoice:', error);
-            toast.error('Erro ao realizar pagamento: ' + error.message);
+            toast.error('Erro ao processar pagamento: ' + (error.message || 'Erro desconhecido'));
+        } finally {
+            setLoading(false);
         }
     };
 

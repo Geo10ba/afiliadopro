@@ -7,7 +7,7 @@ interface Order {
     id: string;
     created_at: string;
     amount: number;
-    status: 'pending' | 'approved' | 'rejected';
+    status: 'pending' | 'approved' | 'rejected' | 'paid' | 'shipped' | 'delivered';
     payment_method: string;
     download_link?: string;
     products: {
@@ -62,7 +62,7 @@ const UserOrdersModal: React.FC<UserOrdersModalProps> = ({ isOpen, onClose, user
         .reduce((sum, o) => sum + Number(o.amount), 0);
 
     const approvedTotal = orders
-        .filter(o => o.status === 'approved')
+        .filter(o => ['approved', 'paid', 'shipped', 'delivered'].includes(o.status))
         .reduce((sum, o) => sum + Number(o.amount), 0);
 
     return (
@@ -91,7 +91,7 @@ const UserOrdersModal: React.FC<UserOrdersModalProps> = ({ isOpen, onClose, user
                                 <div className="summary-card approved">
                                     <h3>Total Aprovado</h3>
                                     <div className="value">R$ {approvedTotal.toFixed(2)}</div>
-                                    <small>{orders.filter(o => o.status === 'approved').length} pedidos</small>
+                                    <small>{orders.filter(o => ['approved', 'paid', 'shipped', 'delivered'].includes(o.status)).length} pedidos</small>
                                 </div>
                             </div>
 
@@ -146,9 +146,19 @@ const UserOrdersModal: React.FC<UserOrdersModalProps> = ({ isOpen, onClose, user
                                                     <td>
                                                         <span className={`status-badge ${order.status}`}>
                                                             {order.status === 'pending' && <Clock size={12} style={{ marginRight: '4px' }} />}
-                                                            {order.status === 'approved' && <CheckCircle size={12} style={{ marginRight: '4px' }} />}
-                                                            {order.status === 'pending' ? 'Pendente' :
-                                                                order.status === 'approved' ? 'Aprovado' : 'Rejeitado'}
+                                                            {(order.status === 'approved' || order.status === 'paid' || order.status === 'shipped' || order.status === 'delivered') && <CheckCircle size={12} style={{ marginRight: '4px' }} />}
+
+                                                            {(() => {
+                                                                switch (order.status) {
+                                                                    case 'pending': return 'Pendente';
+                                                                    case 'approved': return 'Aprovado';
+                                                                    case 'paid': return 'Pago';
+                                                                    case 'shipped': return 'Enviado';
+                                                                    case 'delivered': return 'Entregue';
+                                                                    case 'rejected': return 'Rejeitado';
+                                                                    default: return order.status;
+                                                                }
+                                                            })()}
                                                         </span>
                                                     </td>
                                                 </tr>
