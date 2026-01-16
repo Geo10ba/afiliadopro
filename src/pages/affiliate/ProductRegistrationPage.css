@@ -32,8 +32,23 @@
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: var(--color-gold);
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 0.6rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 0.2s;
+    font-size: 0.9rem;
+    resize: vertical;
+    font-family: inherit;
 }
 
 .form-row {

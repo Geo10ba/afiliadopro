@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Calculator, DollarSign, Save, FileText } from 'lucide-react';
+import { Upload, Calculator, DollarSign, Save, FileText, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
@@ -21,6 +21,7 @@ interface ProductRegistrationFormData {
     priceType: 'meter' | 'fixed';
     fixedPrice: string;
     commissionRate: string;
+    description: string;
 }
 
 const ProductRegistrationPage: React.FC = () => {
@@ -35,7 +36,8 @@ const ProductRegistrationPage: React.FC = () => {
         materialId: '',
         priceType: 'meter',
         fixedPrice: '',
-        commissionRate: '10'
+        commissionRate: '10',
+        description: ''
     });
     const [calculatedCost, setCalculatedCost] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
@@ -58,8 +60,12 @@ const ProductRegistrationPage: React.FC = () => {
     };
 
     useEffect(() => {
-        calculateCost();
-    }, [formData.width, formData.height, formData.materialId]);
+        if (formData.priceType === 'meter') {
+            calculateCost();
+        } else {
+            setCalculatedCost(null);
+        }
+    }, [formData.width, formData.height, formData.materialId, formData.priceType]);
 
     const fetchMaterials = async () => {
         const { data } = await supabase.from('materials').select('*').order('name');
@@ -82,7 +88,7 @@ const ProductRegistrationPage: React.FC = () => {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
@@ -105,14 +111,15 @@ const ProductRegistrationPage: React.FC = () => {
                 name: formData.name,
                 pdf_url: formData.pdfUrl,
                 image_url: formData.imageUrl,
-                width: parseFloat(formData.width),
-                height: parseFloat(formData.height),
-                material_id: formData.materialId,
+                width: formData.priceType === 'meter' ? parseFloat(formData.width) : null,
+                height: formData.priceType === 'meter' ? parseFloat(formData.height) : null,
+                material_id: formData.priceType === 'meter' ? formData.materialId : null,
                 price_type: formData.priceType,
                 calculated_cost: calculatedCost,
                 commission_rate: parseFloat(formData.commissionRate) || 10,
                 fixed_cost: formData.priceType === 'fixed' ? parseFloat(formData.fixedPrice) : null,
-                final_price: finalPrice
+                final_price: finalPrice,
+                description: formData.description
             }]);
 
             if (error) throw error;
@@ -127,7 +134,8 @@ const ProductRegistrationPage: React.FC = () => {
                 materialId: '',
                 priceType: 'meter',
                 fixedPrice: '',
-                commissionRate: '10'
+                commissionRate: '10',
+                description: ''
             });
             setCalculatedCost(null);
 
@@ -203,52 +211,72 @@ const ProductRegistrationPage: React.FC = () => {
                             </div>
 
 
-                            {/* Dimensions & Material */}
-                            <div className="form-section">
-                                <h3><Calculator size={20} /> Medidas e Material</h3>
-                                <div className="form-row">
-                                    <div className="form-group">
-                                        <label>Largura (mm)</label>
-                                        <input
-                                            type="number"
-                                            name="width"
-                                            value={formData.width}
-                                            onChange={handleChange}
-                                            placeholder="0.0"
-                                            step="0.1"
-                                            required
-                                        />
+                            {/* Dimensions & Material - Only for 'meter' price type */}
+                            {formData.priceType === 'meter' && (
+                                <div className="form-section">
+                                    <h3><Calculator size={20} /> Medidas e Material</h3>
+                                    <div className="form-row">
+                                        <div className="form-group">
+                                            <label>Largura (mm)</label>
+                                            <input
+                                                type="number"
+                                                name="width"
+                                                value={formData.width}
+                                                onChange={handleChange}
+                                                placeholder="0.0"
+                                                step="0.1"
+                                                required={formData.priceType === 'meter'}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Altura (mm)</label>
+                                            <input
+                                                type="number"
+                                                name="height"
+                                                value={formData.height}
+                                                onChange={handleChange}
+                                                placeholder="0.0"
+                                                step="0.1"
+                                                required={formData.priceType === 'meter'}
+                                            />
+                                        </div>
                                     </div>
                                     <div className="form-group">
-                                        <label>Altura (mm)</label>
-                                        <input
-                                            type="number"
-                                            name="height"
-                                            value={formData.height}
+                                        <label>Material</label>
+                                        <select
+                                            name="materialId"
+                                            value={formData.materialId}
                                             onChange={handleChange}
-                                            placeholder="0.0"
-                                            step="0.1"
-                                            required
+                                            required={formData.priceType === 'meter'}
+                                        >
+                                            <option value="">Selecione um material...</option>
+                                            {materials.map(m => (
+                                                <option key={m.id} value={m.id}>
+                                                    {m.name} (R$ {m.price_per_m2.toFixed(2)}/m²)
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Observation - Only for 'fixed' price type */}
+                            {formData.priceType === 'fixed' && (
+                                <div className="form-section">
+                                    <h3><MessageSquare size={20} /> Observações</h3>
+                                    <div className="form-group">
+                                        <label>Observação sobre o produto</label>
+                                        <textarea
+                                            name="description"
+                                            value={formData.description}
+                                            onChange={handleChange}
+                                            placeholder="Descreva detalhes importantes sobre o produto..."
+                                            rows={4}
+                                            className="form-textarea"
                                         />
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label>Material</label>
-                                    <select
-                                        name="materialId"
-                                        value={formData.materialId}
-                                        onChange={handleChange}
-                                        required
-                                    >
-                                        <option value="">Selecione um material...</option>
-                                        {materials.map(m => (
-                                            <option key={m.id} value={m.id}>
-                                                {m.name} (R$ {m.price_per_m2.toFixed(2)}/m²)
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
+                            )}
                         </div>
 
                         {/* Right Column */}
@@ -257,7 +285,7 @@ const ProductRegistrationPage: React.FC = () => {
                             <div className="form-section pricing-section">
                                 <h3><DollarSign size={20} /> Precificação</h3>
 
-                                {calculatedCost !== null && (
+                                {formData.priceType === 'meter' && calculatedCost !== null && (
                                     <div className="cost-preview">
                                         <span>Custo Calculado:</span>
                                         <span className="cost-value">R$ {calculatedCost.toFixed(2)}</span>
@@ -304,7 +332,7 @@ const ProductRegistrationPage: React.FC = () => {
                                             onChange={handleChange}
                                             placeholder="0.00"
                                             step="0.01"
-                                            required
+                                            required={formData.priceType === 'fixed'}
                                         />
                                     </div>
                                 )}
