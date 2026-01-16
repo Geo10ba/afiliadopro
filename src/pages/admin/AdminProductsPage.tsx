@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Check, X, Package, Edit, DollarSign, FileText } from 'lucide-react';
+import { Search, Check, X, Pencil } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { toast } from 'sonner';
 import Pagination from '../../components/ui/Pagination';
@@ -243,7 +243,7 @@ const AdminProductsPage: React.FC = () => {
                                                     title="Clique para editar a comissão"
                                                 >
                                                     <span className="commission-value">{product.commission_rate}%</span>
-                                                    <Edit size={14} className="edit-hint" />
+                                                    <Pencil size={14} className="edit-hint" />
                                                 </td>
                                                 <td>
                                                     <span className={`badge badge-${product.status === 'approved' ? 'success' :
@@ -280,7 +280,7 @@ const AdminProductsPage: React.FC = () => {
                                                                 onClick={() => handleEditCommission(product)}
                                                                 style={{ color: '#ffc107', background: 'rgba(255, 193, 7, 0.1)', border: '1px solid rgba(255, 193, 7, 0.3)' }}
                                                             >
-                                                                <Edit size={18} />
+                                                                <Pencil size={18} />
                                                             </button>
                                                         )}
                                                         {product.status === 'rejected' && (
