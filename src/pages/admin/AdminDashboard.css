@@ -169,3 +169,33 @@
     text-align: center;
     padding: 2rem 0;
 }
+
+@media (max-width: 768px) {
+    .admin-dashboard {
+        padding: 1rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .kpi-card {
+        padding: 1.5rem;
+    }
+
+    .top-list-card {
+        padding: 1rem;
+    }
+
+    .item-info {
+        min-width: 0;
+        /* Allow flex child to shrink */
+    }
+
+    .item-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
